@@ -1,0 +1,19 @@
+{
+  "name": "pleny_task",
+  "version": "1.0.0",
+  "description": "This is pleny task for freelancer data engineer",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Amgad",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.2.4",
+    "typescript": "^5.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
