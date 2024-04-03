@@ -3,6 +3,8 @@ config();
 import * as express from "express";
 import * as http from "http";
 import errorMiddleware from './middlewares/error.middleware';
+import mongoose from 'mongoose';
+import { intializeBrands } from './utils/validators/brandSchemaValidator';
 class App {
   public app: express.Application;
   public server: http.Server;
@@ -33,7 +35,16 @@ private initializeMiddlewares() {
     this.app.use(errorMiddleware);
   }
 
-  private initializeDataSource() {}
+  private initializeDataSource() {
+    mongoose.connect(process.env.MONGO_URL ?? '', {
+    }).then(async () => {
+      console.log('Connected to database');
+      await intializeBrands(mongoose.connection.getClient());
+    }).catch((error) => {
+      console.error('Error connecting to database', error);
+
+    });
+  }
 
   private async intializeSeeders() {}
 }

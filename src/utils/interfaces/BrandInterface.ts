@@ -1,7 +1,8 @@
 import { Document } from 'mongoose';
 
 export interface IBrand extends Document {
-    name: string;
-    foundedYear: number;
-
+    brandName: string;
+    yearFounded: number;
+    headquarters: string;
+    numberOfLocations: number;
 }
