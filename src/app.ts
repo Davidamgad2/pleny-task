@@ -5,6 +5,7 @@ import * as http from "http";
 import errorMiddleware from './middlewares/error.middleware';
 import mongoose from 'mongoose';
 import { intializeBrands } from './utils/validators/brandSchemaValidator';
+import { seedBrands } from './utils/seeders/brands.seeder';
 class App {
   public app: express.Application;
   public server: http.Server;
@@ -36,10 +37,11 @@ private initializeMiddlewares() {
   }
 
   private initializeDataSource() {
-    mongoose.connect(process.env.MONGO_URL ?? '', {
+    mongoose.connect(process.env.MONGO_URL ?? 'mongodb://127.0.0.1:27017/pleny', {
     }).then(async () => {
       console.log('Connected to database');
       await intializeBrands(mongoose.connection.getClient());
+      await seedBrands();
     }).catch((error) => {
       console.error('Error connecting to database', error);
 

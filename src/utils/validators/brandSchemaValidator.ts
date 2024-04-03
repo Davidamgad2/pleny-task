@@ -14,9 +14,8 @@ import {
 
 export const intializeBrands = async (client: MongoClient) => {
   const db = client.db("pleny");
-  const brands = await db.collection("brand").find().toArray();
-  let counter = 0;
-  for (const brand of brands) {
+  const brands = await db.collection("brands").find().toArray();
+  for (let brand of brands) {
     Promise.all([
       validateBrandName(brand.brandName),
       validateYearFounded(brand.yearFounded),
@@ -32,12 +31,29 @@ export const intializeBrands = async (client: MongoClient) => {
         ]);
       })
       .then(async (results) => {
-        const result = results[0];
-        delete result.brand.brand;
-        await db
-          .collection("brand")
-          .replaceOne({ _id: result.brand._id }, result.brand);
-      })
+        if (results.some(async(result) => !result.valid)) {
+          let finalBrand = {...brand};
+          const resultBrandName = results[0];
+          const resultYearFounded = results[1];
+          const resultHeadQuarters = results[2];
+          const resultNumberOfLocations = results[3];
+          if (!resultBrandName.valid){
+            finalBrand = resultBrandName.brand.branName;
+          }
+          if (!resultYearFounded.valid){
+            finalBrand = resultBrandName.brand.yearFounded;
+          }
+          if (!resultHeadQuarters.valid){
+            finalBrand = resultBrandName.brand.headquarters;
+          }
+          if (!resultNumberOfLocations.valid){
+            finalBrand = resultBrandName.brand.numberOfLocations;
+          }
+          await db
+            .collection("brand")
+            .replaceOne({ _id: brand._id }, {...finalBrand});
+        }
+        })
       .catch((error) => {
         console.error("Error validating brand", error);
       });
