@@ -11,6 +11,8 @@ import {
   postValidateNumberOfLocations,
   postValidateYearFounded,
 } from "./postBrandSchemaValidator";
+import * as fs from "fs";
+import { dirname } from "path";
 
 export const intializeBrands = async (client: MongoClient) => {
   const db = client.db("pleny");

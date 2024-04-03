@@ -31,7 +31,7 @@ const postValidateBrandName = async (brand: any, originalBrand: any) => {
   delete originalBrand.brand.brandName;
   delete originalBrand.brand;
   originalBrand[brand.key] = brand[brand.key]
-  return { valid: false, brand: originalBrand.brandName };
+  return { valid: false, brand: originalBrand };
 };
 const postValidateYearFounded = async (brand: any, originalBrand: any) => {
   if (brand.validated === true) return { valid: true, brand: originalBrand };
